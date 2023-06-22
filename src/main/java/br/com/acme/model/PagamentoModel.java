@@ -5,9 +5,9 @@ import java.util.List;
 
 public class PagamentoModel {
 
-    private List<ProdutoModel> produtos;
-    private LocalDate dataCompra;
-    private ClienteModel cliente;
+    private final List<ProdutoModel> produtos;
+    private final LocalDate dataCompra;
+    private final ClienteModel cliente;
 
     public PagamentoModel(List<ProdutoModel> produtos, LocalDate dataCompra, ClienteModel cliente) {
         this.produtos = produtos;
@@ -19,23 +19,11 @@ public class PagamentoModel {
         return produtos;
     }
 
-    public void setProdutos(List<ProdutoModel> produtos) {
-        this.produtos = produtos;
-    }
-
     public LocalDate getDataCompra() {
         return dataCompra;
     }
 
-    public void setDataCompra(LocalDate dataCompra) {
-        this.dataCompra = dataCompra;
-    }
-
     public ClienteModel getCliente() {
         return cliente;
-    }
-
-    public void setCliente(ClienteModel cliente) {
-        this.cliente = cliente;
     }
 }

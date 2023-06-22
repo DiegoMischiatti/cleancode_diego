@@ -5,10 +5,10 @@ import java.time.LocalDate;
 import java.util.Optional;
 
 public class AssinaturaModel {
-    private BigDecimal mensalidade;
-    private LocalDate inicio;
-    private Optional<LocalDate> fim;
-    private ClienteModel cliente;
+    private final BigDecimal mensalidade;
+    private final LocalDate inicio;
+    private final Optional<LocalDate> fim;
+    private final ClienteModel cliente;
 
     public AssinaturaModel(BigDecimal mensalidade, LocalDate inicio, LocalDate fim, ClienteModel cliente) {
         this.mensalidade = mensalidade;
@@ -28,31 +28,16 @@ public class AssinaturaModel {
         return mensalidade;
     }
 
-    public void setMensalidade(BigDecimal mensalidade) {
-        this.mensalidade = mensalidade;
-    }
-
     public LocalDate getInicio() {
         return inicio;
     }
 
-    public void setInicio(LocalDate inicio) {
-        this.inicio = inicio;
-    }
 
     public Optional<LocalDate> getFim() {
         return fim;
     }
 
-    public void setFim(LocalDate fim) {
-        this.fim = Optional.of(fim);
-    }
-
     public ClienteModel getCliente() {
         return cliente;
-    }
-
-    public void setCliente(ClienteModel cliente) {
-        this.cliente = cliente;
     }
 }

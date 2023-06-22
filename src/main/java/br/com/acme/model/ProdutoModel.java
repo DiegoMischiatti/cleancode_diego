@@ -4,9 +4,9 @@ import java.math.BigDecimal;
 import java.nio.file.Path;
 
 public class ProdutoModel {
-    private String nome;
-    private Path file;
-    private BigDecimal preco;
+    private final String nome;
+    private final Path file;
+    private final BigDecimal preco;
 
     public ProdutoModel(String nome, Path file, BigDecimal preco) {
         this.nome = nome;
@@ -18,23 +18,7 @@ public class ProdutoModel {
         return nome;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public Path getFile() {
-        return file;
-    }
-
-    public void setFile(Path file) {
-        this.file = file;
-    }
-
     public BigDecimal getPreco() {
         return preco;
-    }
-
-    public void setPreco(BigDecimal preco) {
-        this.preco = preco;
     }
 }
