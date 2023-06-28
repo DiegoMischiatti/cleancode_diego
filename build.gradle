@@ -1,5 +1,6 @@
 plugins {
-    id("java")
+    id "java"
+    id "org.sonarqube" version "4.2.1.3168"
 }
 
 group = "org.example"
@@ -10,7 +11,7 @@ repositories {
 }
 
 dependencies {
-    testImplementation("org.junit.jupiter:junit-jupiter")
+
 }
 
 tasks.test {
