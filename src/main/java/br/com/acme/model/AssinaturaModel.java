@@ -1,6 +1,7 @@
 package br.com.acme.model;
 
 import br.com.acme.enums.TipoAssinatura;
+import br.com.acme.exceptions.ClienteAtrasadoException;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -11,25 +12,15 @@ public class AssinaturaModel {
     private final LocalDate inicio;
     private final Optional<LocalDate> fim;
     private final ClienteModel cliente;
-    private TipoAssinatura tipoAssinatura;
-    private boolean isAtrasado;
+    private final TipoAssinatura tipoAssinatura;
 
-    public AssinaturaModel(BigDecimal mensalidade, LocalDate inicio, LocalDate fim, ClienteModel cliente, TipoAssinatura tipoAssinatura) {
+    public AssinaturaModel(BigDecimal mensalidade, LocalDate inicio, LocalDate fim, ClienteModel cliente, TipoAssinatura tipoAssinatura, boolean isAtrasado) {
         this.mensalidade = mensalidade;
         this.inicio = inicio;
         this.fim = Optional.of(fim);
         this.cliente = cliente;
         this.tipoAssinatura = tipoAssinatura;
-        this.isAtrasado = false;
-    }
-
-    public AssinaturaModel(BigDecimal mensalidade, LocalDate inicio, ClienteModel cliente, TipoAssinatura tipoAssinatura) {
-        this.mensalidade = mensalidade;
-        this.inicio = inicio;
-        this.cliente = cliente;
-        this.fim = Optional.empty();
-        this.tipoAssinatura = tipoAssinatura;
-        this.isAtrasado = false;
+        if(isAtrasado) throw clienteComAtrasoException();
     }
 
     public BigDecimal getMensalidade() {
@@ -53,15 +44,8 @@ public class AssinaturaModel {
         return tipoAssinatura;
     }
 
-    public void setTipoAssinatura(TipoAssinatura tipoAssinatura) {
-        this.tipoAssinatura = tipoAssinatura;
+    public ClienteAtrasadoException clienteComAtrasoException() {
+        throw new ClienteAtrasadoException("Cliente com atraso, não pode realizar assinatura!");
     }
 
-    public boolean isAtrasado() {
-        return isAtrasado;
-    }
-
-    public void setAtrasado(boolean atrasado) {
-        isAtrasado = atrasado;
-    }
 }

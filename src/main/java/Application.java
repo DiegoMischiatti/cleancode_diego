@@ -1,4 +1,3 @@
-import br.com.acme.enums.TipoAssinatura;
 import br.com.acme.model.AssinaturaModel;
 import br.com.acme.model.ClienteModel;
 import br.com.acme.model.PagamentoModel;
@@ -12,6 +11,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import static br.com.acme.builders.AssinaturaBuilder.umaAssinatura;
+import static br.com.acme.enums.TipoAssinatura.*;
 import static java.time.Month.*;
 
 public class Application {
@@ -67,9 +68,24 @@ public class Application {
         pagamentoService.calcularFaturamentoPorMes(pagamentos);
 
         // 9 - Crie 3 assinaturas com assinaturas de 99.98 reais, sendo 2 deles com assinaturas encerradas. [OK]
-        AssinaturaModel assinaturaEmAberto = new AssinaturaModel(new BigDecimal("99.98"), LocalDate.of(2023, JANUARY, 10), breno, TipoAssinatura.ANUAL);
-        AssinaturaModel assinaturaEncerrada1 = new AssinaturaModel(new BigDecimal("99.98"), LocalDate.of(2022, APRIL, 23), LocalDate.of(2022, DECEMBER, 30), joao, TipoAssinatura.TRIMESTRAL);
-        AssinaturaModel assinaturaEncerrada2 = new AssinaturaModel(new BigDecimal("99.98"), LocalDate.of(2020, OCTOBER, 15), LocalDate.of(2023, MAY, 5), maria, TipoAssinatura.SEMESTRAL);
+        AssinaturaModel assinaturaEmAberto = umaAssinatura()
+                .comCliente(breno)
+                .comTipoAssinatura(ANUAL)
+                .agora();
+
+        AssinaturaModel assinaturaEncerrada1 = umaAssinatura()
+                .comCliente(joao)
+                .comTipoAssinatura(TRIMESTRAL)
+                .comInicio(LocalDate.of(2022, APRIL, 23))
+                .comFim(LocalDate.of(2022, DECEMBER, 30))
+                .agora();
+
+        AssinaturaModel assinaturaEncerrada2 = umaAssinatura()
+                .comCliente(maria)
+                .comTipoAssinatura(SEMESTRAL)
+                .comInicio(LocalDate.of(2020, OCTOBER, 15))
+                .comFim(LocalDate.of(2023, MAY, 5))
+                .agora();
 
         // 10 - Imprima o tempo em meses de alguma assinatura ainda ativa. [OK]
         System.out.println("--------------------------#10--------------------------");
@@ -80,16 +96,25 @@ public class Application {
         List<AssinaturaModel> assinaturas = new ArrayList<>(List.of(assinaturaEmAberto, assinaturaEncerrada1, assinaturaEncerrada2));
         assinaturaService.calcularPeriodoAssinaturas(assinaturas);
 
-
         // 12 - Calcule o valor pago em cada assinatura até o momento. [OK]
         System.out.println("--------------------------#12--------------------------");
         assinaturaService.calcularValorPagoPorAssinatura(assinaturas);
 
         // Crie um método para calcular uma taxa para cada assinatura.
-        System.out.println("----------------------------------------------------");
+        System.out.println("--------------------------LISTA 2--------------------------");
+        System.out.println("--------------------------Calculo das taxas--------------------------");
         assinaturas.forEach(assinatura -> {
             BigDecimal taxa = assinaturaService.calcularTaxaAssinatura(assinatura);
-            System.out.println(assinatura.getCliente().getNome() + " paga mensalidade de R$" + assinatura.getMensalidade() + " + taxa de R$ " + taxa);
+            System.out.println(assinatura.getCliente().getNome() + " paga mensalidade de R$" + assinatura.getMensalidade() +
+                    " no plano " + assinatura.getTipoAssinatura() + " + taxa de R$ " + taxa);
         });
+
+        // Crie um mecanismo para validar clientes que tentarem fazer compras com assinatura em atraso e não deixá-los comprar.
+
+        System.out.println("--------------------------Validação de atraso no pagamento--------------------------");
+        System.out.println("Para lancar a excecao, descomentar o 'comAtraso(true)' e a exceção será lançada.");
+        AssinaturaModel assinaturaComAtraso = umaAssinatura()
+//                .comAtraso(true)
+                .agora();
     }
 }
