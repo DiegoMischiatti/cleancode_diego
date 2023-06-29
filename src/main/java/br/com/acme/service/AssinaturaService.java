@@ -1,7 +1,7 @@
 package br.com.acme.service;
 
-import br.com.acme.enums.TipoAssinatura;
 import br.com.acme.model.AssinaturaModel;
+import br.com.acme.utils.CalculadoraTaxaUtils;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -10,17 +10,16 @@ import java.util.List;
 
 public class AssinaturaService {
 
-    public void calcularMesesDeAssinatura(AssinaturaModel assinatura){
+    private static final LocalDate hoje = LocalDate.now();
 
-        LocalDate hoje = LocalDate.now();
+    public static long calcularMesesDeAssinatura(AssinaturaModel assinatura) {
 
         long tempoEmMeses = ChronoUnit.MONTHS.between(assinatura.getInicio(), assinatura.getFim().orElse(hoje));
         System.out.println("O total de meses de assinatura de " + assinatura.getCliente().getNome() + " é: " + tempoEmMeses + " meses.");
+        return tempoEmMeses;
     }
 
-    public void calcularPeriodoAssinaturas(List<AssinaturaModel> assinaturas){
-        LocalDate hoje = LocalDate.now();
-
+    public void calcularPeriodoAssinaturas(List<AssinaturaModel> assinaturas) {
         assinaturas.forEach(ass -> {
             long meses = ChronoUnit.MONTHS.between(ass.getInicio(), ass.getFim().orElse(hoje));
             System.out.println("O total de meses de assinatura de " + ass.getCliente().getNome() + " é: " + meses + " meses.");
@@ -28,31 +27,30 @@ public class AssinaturaService {
     }
 
     public void calcularValorPagoPorAssinatura(List<AssinaturaModel> assinaturas) {
-        LocalDate hoje = LocalDate.now();
-                assinaturas.forEach(ass -> {
+        assinaturas.forEach(ass -> {
             long meses = ChronoUnit.MONTHS.between(ass.getInicio(), ass.getFim().orElse(hoje));
             BigDecimal valorPago = ass.getMensalidade().multiply(BigDecimal.valueOf(meses));
             System.out.println("O valor pago por " + ass.getCliente().getNome() + " até agora é de R$ " + valorPago);
         });
     }
 
-    public BigDecimal calcularTaxaAssinatura(AssinaturaModel assinatura){
+    public BigDecimal calcularTaxaAssinatura(AssinaturaModel assinatura) {
         BigDecimal taxa = new BigDecimal(0);
+        CalculadoraTaxaUtils calculadora = new CalculadoraTaxaUtils();
 
         switch (assinatura.getTipoAssinatura()) {
-            case ANUAL:
+            case ANUAL -> {
                 System.out.println("Taxa: 0%");
-            break;
-            case TRIMESTRAL:
+                taxa = calculadora.calculaTaxaAnual(assinatura);
+            }
+            case TRIMESTRAL -> {
                 System.out.println("Taxa: 3%");
-                taxa = assinatura.getMensalidade().multiply(new BigDecimal(3)).divide(new BigDecimal(100));
-
-            break;
-            case SEMESTRAL:
+                taxa = calculadora.calculaTaxaTrimestral(assinatura);
+            }
+            case SEMESTRAL -> {
                 System.out.println("Taxa: 6%");
-                taxa = assinatura.getMensalidade().multiply(new BigDecimal(5)).divide(new BigDecimal(100));
-
-            break;
+                taxa = calculadora.calculaTaxaSemestral(assinatura);
+            }
         }
         return taxa;
     }

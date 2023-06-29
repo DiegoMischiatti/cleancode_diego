@@ -9,12 +9,8 @@ import br.com.acme.service.ProdutoService;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.Month;
-import java.time.format.TextStyle;
-import java.time.temporal.ChronoUnit;
-import java.util.*;
-import java.util.function.Function;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.List;
 
 import static java.time.Month.*;
 
@@ -78,7 +74,7 @@ public class Application {
         // 10 - Imprima o tempo em meses de alguma assinatura ainda ativa. [OK]
         System.out.println("--------------------------#10--------------------------");
         AssinaturaService assinaturaService = new AssinaturaService();
-        assinaturaService.calcularMesesDeAssinatura(assinaturaEmAberto);
+        AssinaturaService.calcularMesesDeAssinatura(assinaturaEmAberto);
 
         System.out.println("--------------------------#11--------------------------");
         List<AssinaturaModel> assinaturas = new ArrayList<>(List.of(assinaturaEmAberto, assinaturaEncerrada1, assinaturaEncerrada2));
@@ -91,7 +87,9 @@ public class Application {
 
         // Crie um método para calcular uma taxa para cada assinatura.
         System.out.println("----------------------------------------------------");
-        System.out.println("Valor em R$: " + assinaturaService.calcularTaxaAssinatura(assinaturaEmAberto));
-
+        assinaturas.forEach(assinatura -> {
+            BigDecimal taxa = assinaturaService.calcularTaxaAssinatura(assinatura);
+            System.out.println(assinatura.getCliente().getNome() + " paga mensalidade de R$" + assinatura.getMensalidade() + " + taxa de R$ " + taxa);
+        });
     }
 }
