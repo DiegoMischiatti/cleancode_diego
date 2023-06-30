@@ -39,9 +39,15 @@ public class AssinaturaService {
         CalculadoraTaxaUtils calculadora = new CalculadoraTaxaUtils();
 
         switch (assinatura.getTipoAssinatura()) {
-            case ANUAL -> taxa = calculadora.calculaTaxaAnual(assinatura);
-            case TRIMESTRAL -> taxa = calculadora.calculaTaxaTrimestral(assinatura);
-            case SEMESTRAL -> taxa = calculadora.calculaTaxaSemestral(assinatura);
+            case ANUAL:
+                taxa = calculadora.calculaTaxaAnual(assinatura);
+                break;
+            case TRIMESTRAL:
+                taxa = calculadora.calculaTaxaTrimestral(assinatura);
+                break;
+            case SEMESTRAL:
+                taxa = calculadora.calculaTaxaSemestral(assinatura);
+                break;
         }
         return taxa;
     }
