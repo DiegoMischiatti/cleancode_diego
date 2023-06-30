@@ -45,7 +45,7 @@ public class AssinaturaModel {
     }
 
     public ClienteAtrasadoException clienteComAtrasoException() {
-        throw new ClienteAtrasadoException("Cliente com atraso, não pode realizar assinatura!");
+        throw new ClienteAtrasadoException("Cliente com atraso, nao pode realizar compra!");
     }
 
 }

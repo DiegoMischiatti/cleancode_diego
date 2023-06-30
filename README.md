@@ -2,7 +2,7 @@
 
 ### Primeiro entregável da disciplina de Clean and Code do Instituto Infnet. 
 
-### Alunos: Erisson Breno, Marcus Vinicius e Diego Mischiatti. 
+### Alunos: Erisson Breno, Marcus Vinicius, Diego Mischiatti e Guilherme Urani. 
 
 #### Classes de modelo
 #### Produto [String nome, Path file, BigDecimal Preco]
